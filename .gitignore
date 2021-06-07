@@ -16,3 +16,13 @@ buildNumber.properties
 **/target/
 .idea
 **/.gitignore
+gulimall.iml
+**/gulimall-member.iml
+**/gulimall-product.iml
+**/gulimall-ware.iml
+**/gulimall-order.iml
+**/gulimall-coupon.iml
+
+
+
+
