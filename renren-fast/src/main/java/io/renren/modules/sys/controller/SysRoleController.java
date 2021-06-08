@@ -17,6 +17,7 @@ import io.renren.modules.sys.entity.SysRoleEntity;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@GetMapping("/list")
-	@RequiresPermissions("sys:role:list")
+	//@RequiresPermissions("sys:role:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//如果不是超级管理员，则只查询自己创建的角色列表
 		if(getUserId() != Constant.SUPER_ADMIN){
@@ -57,7 +58,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@GetMapping("/select")
-	@RequiresPermissions("sys:role:select")
+	//@RequiresPermissions("sys:role:select")
 	public R select(){
 		Map<String, Object> map = new HashMap<>();
 		
@@ -74,7 +75,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色信息
 	 */
 	@GetMapping("/info/{roleId}")
-	@RequiresPermissions("sys:role:info")
+	//@RequiresPermissions("sys:role:info")
 	public R info(@PathVariable("roleId") Long roleId){
 		SysRoleEntity role = sysRoleService.getById(roleId);
 		
@@ -90,7 +91,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("保存角色")
 	@PostMapping("/save")
-	@RequiresPermissions("sys:role:save")
+	//@RequiresPermissions("sys:role:save")
 	public R save(@RequestBody SysRoleEntity role){
 		ValidatorUtils.validateEntity(role);
 		
@@ -105,7 +106,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("修改角色")
 	@PostMapping("/update")
-	@RequiresPermissions("sys:role:update")
+	//@RequiresPermissions("sys:role:update")
 	public R update(@RequestBody SysRoleEntity role){
 		ValidatorUtils.validateEntity(role);
 		
@@ -120,7 +121,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("删除角色")
 	@PostMapping("/delete")
-	@RequiresPermissions("sys:role:delete")
+	//@RequiresPermissions("sys:role:delete")
 	public R delete(@RequestBody Long[] roleIds){
 		sysRoleService.deleteBatch(roleIds);
 		

@@ -1,5 +1,6 @@
 package com.atguigu.gulimall.coupon.controller;
 
+import java.lang.reflect.Member;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -30,6 +31,13 @@ import com.atguigu.common.utils.R;
 public class SmsCouponController {
     @Autowired
     private SmsCouponService smsCouponService;
+
+    @RequestMapping("/listCoupon")
+    public R listCoupon(){
+        SmsCouponEntity smsCouponEntity = new SmsCouponEntity();
+        smsCouponEntity.setCouponName("满100减10");
+        return R.ok().put("coupons", Arrays.asList(smsCouponEntity));
+    }
 
     /**
      * 列表
