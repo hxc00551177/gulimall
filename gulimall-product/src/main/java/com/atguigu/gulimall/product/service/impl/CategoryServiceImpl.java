@@ -1,7 +1,12 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,6 +29,25 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<CategoryEntity> queryCategoryTree() {
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
+
+        List<CategoryEntity> collect = categoryEntities.stream().filter(a -> a.getParentCid() == 0).map(a -> {
+            a.setCategoryEntityList(getCategoryChild(a, categoryEntities));
+            return a;
+        }).sorted((a, b) -> (b.getSort() == null ? 0 : b.getSort()) - (a.getSort() == null ? 0 : a.getSort())).collect(Collectors.toList());
+        return collect;
+    }
+
+    private List<CategoryEntity> getCategoryChild(CategoryEntity categoryEntity, List<CategoryEntity> categoryEntities) {
+        List<CategoryEntity> collect = categoryEntities.stream().filter(a -> a.getParentCid() == categoryEntity.getCatId()).map(a -> {
+            a.setCategoryEntityList(getCategoryChild(a, categoryEntities));
+            return a;
+        }).sorted((a, b) -> (b.getSort() == null ? 0 : b.getSort()) - (a.getSort() == null ? 0 : a.getSort())).collect(Collectors.toList());
+        return collect;
     }
 
 }
